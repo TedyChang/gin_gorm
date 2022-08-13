@@ -8,4 +8,5 @@ import (
 func UserRouter(r *gin.Engine) {
 	r.GET("/user", user.GetName)
 	r.POST("/user", user.PostSave)
+	r.POST("/login", user.PostLogin)
 }

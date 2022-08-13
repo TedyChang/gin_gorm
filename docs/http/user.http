@@ -12,4 +12,15 @@ Content-Type: application/json
   "password": "password1"
 }
 
-###
+### login
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "name": "test1",
+  "password": "password1"
+}
+
+> {%
+  client.global.set("token", response.headers.valuesOf("Set-Cookie")[0])
+  %}

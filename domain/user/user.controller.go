@@ -3,27 +3,31 @@ package user
 import (
 	"gin_gorm/util/get"
 	"gin_gorm/util/post"
+	"gin_gorm/util/security"
 	"github.com/gin-gonic/gin"
 )
 
 func GetName(c *gin.Context) {
-	var token, exists = c.Get("token")
+	var token = c.GetHeader("Cookie")
 
-	if exists {
-		u := getUser(token.(string))
-		get.Ok(c, u)
-	} else {
+	var strToken = token[len("token="):]
+
+	if strToken == "" {
 		get.Bad(c, "not principal")
+	} else {
+		u := getUser(strToken)
+		get.Ok(c, u)
 	}
+
 }
 
-type saveDto struct {
+type namePwDto struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
 }
 
 func PostSave(c *gin.Context) {
-	var dto = saveDto{}
+	var dto = namePwDto{}
 	var err1 = c.BindJSON(&dto)
 
 	var name = dto.Name
@@ -38,6 +42,26 @@ func PostSave(c *gin.Context) {
 		}
 	} else {
 		post.Bad(c, "empty name, pw")
+	}
+}
+
+func PostLogin(c *gin.Context) {
+	var dto = namePwDto{}
+	var err1 = c.BindJSON(&dto)
+
+	var name = dto.Name
+	var pw = dto.Password
+
+	if err1 == nil {
+		token := Login(User{Name: name, Password: pw})
+
+		if token == "" {
+			get.Bad(c, "")
+		} else {
+			security.Login(c, token)
+		}
+	} else {
+		post.Bad(c, "err?"+err1.Error())
 	}
 
 }

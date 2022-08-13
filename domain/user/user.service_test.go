@@ -66,7 +66,7 @@ func Test_getId(t *testing.T) {
 		want string
 	}{
 		{
-			"token get Id",
+			"S / token get Id",
 			args{strToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTEiLCJpc19hZG1pbiI6ZmFsc2UsImVtYWlsIjoidGVzdEBhc2tlLmNvLmtyIn0.PTXUo32VfBNI0QX71vHyVklXpeO0uAvK_dEKtsxGTnk"},
 			"test@aske.co.kr",
 		},
@@ -91,7 +91,7 @@ func Test_validateSave(t *testing.T) {
 		want1 error
 	}{
 		{
-			"S / validate user save success",
+			"S / validate user save",
 			args{u: User{
 				Name:     "test",
 				Password: "pw1",

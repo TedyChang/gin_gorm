@@ -18,3 +18,7 @@ func (u *User) FindById() {
 func (u *User) Create() {
 	db.DB.Create(&u)
 }
+
+func (u *User) FindByNamePw() {
+	db.DB.Where("name = ? AND password = ?", u.Name, u.Password).First(&u)
+}

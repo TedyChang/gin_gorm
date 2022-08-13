@@ -24,6 +24,10 @@ func getId(strToken string) string {
 }
 
 func Login(u User) string {
+	u.FindByNamePw()
+	if u.ID == 0 {
+		return ""
+	}
 	str, _ := auth.CreateToken(u.ID)
 	return str
 }
