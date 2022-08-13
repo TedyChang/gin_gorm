@@ -6,7 +6,7 @@ import (
 )
 
 func UserRouter(r *gin.Engine) {
-	r.GET("/user", user.GetName)
+	r.GET("/user", user.GetUserId)
 	r.POST("/user", user.PostSave)
 	r.POST("/login", user.PostLogin)
 }

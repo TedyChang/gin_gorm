@@ -7,7 +7,7 @@ import (
 )
 
 // fn
-func getEmail(strToken string) string {
+func getUserID(strToken string) uint {
 	return auth.TokenGetEmail(auth.StringToToken(strToken))
 }
 
@@ -15,11 +15,11 @@ func getEmail(strToken string) string {
 func login(u User) string {
 	u.FindByNamePw()
 
-	return getName(u)
+	return createToken(u)
 }
 
 // fn
-func getName(u User) string {
+func createToken(u User) string {
 	if u.ID == 0 {
 		return ""
 	}

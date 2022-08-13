@@ -9,8 +9,8 @@ import (
 
 type userClaims struct {
 	jwt.RegisteredClaims
-	IsAdministrator bool   `json:"is_admin"`
-	Email           string `json:"email"`
+	IsAdministrator bool `json:"is_admin"`
+	UserID          uint `json:"user_id"`
 }
 
 func CreateToken(id uint) (string, error) {
@@ -25,7 +25,7 @@ func CreateToken(id uint) (string, error) {
 			ID:       "go-gin-project-core",
 		},
 		IsAdministrator: false,
-		Email:           "test@aske.co.kr",
+		UserID:          id,
 	}
 
 	token, err := builder.Build(claims)
@@ -34,7 +34,7 @@ func CreateToken(id uint) (string, error) {
 	return token.String(), nil
 }
 
-func TokenGetEmail(token *jwt.Token) string {
+func TokenGetEmail(token *jwt.Token) uint {
 	key := []byte("jwt_!test")
 
 	verifier, err := jwt.NewVerifierHS(jwt.HS256, key)
@@ -50,10 +50,10 @@ func TokenGetEmail(token *jwt.Token) string {
 
 	err = json.Unmarshal(newToken.Claims(), &u)
 	if err != nil {
-		return ""
+		return 0
 	}
 
-	return u.Email
+	return u.UserID
 }
 
 func StringToToken(strToken string) *jwt.Token {

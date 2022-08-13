@@ -19,25 +19,25 @@ func TestUser_Login(t *testing.T) {
 		want   string
 	}{
 		{
-			"100",
+			"S > login 100",
 			fields{
 				ID: 100,
 			},
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTAwIiwiaXNfYWRtaW4iOmZhbHNlLCJlbWFpbCI6InRlc3RAYXNrZS5jby5rciJ9.6ZcNPBX0kGfmHTCndbbt63ICX_mxyW7nCcXw3fxDo7A",
+			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTAwIiwiaXNfYWRtaW4iOmZhbHNlLCJ1c2VyX2lkIjoxMDB9.cT5r-erbnVfxu0MoB6bAXcpFh3gCifnt-KQIaGhk9GM",
 		},
 		{
-			"101",
+			"S > login 123",
 			fields{
 				ID: 123,
 			},
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTIzIiwiaXNfYWRtaW4iOmZhbHNlLCJlbWFpbCI6InRlc3RAYXNrZS5jby5rciJ9.kS0LaBans8jHojQ6PAfXgloIReBPFQVxOOBLwGq18p0",
+			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTIzIiwiaXNfYWRtaW4iOmZhbHNlLCJ1c2VyX2lkIjoxMjN9.tztEiPbPyUapPllQDfnD3_hg6Yxr9nYJUebVwQ5UN3Y",
 		},
 		{
-			"102",
+			"S > login 11",
 			fields{
 				ID: 11,
 			},
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTEiLCJpc19hZG1pbiI6ZmFsc2UsImVtYWlsIjoidGVzdEBhc2tlLmNvLmtyIn0.PTXUo32VfBNI0QX71vHyVklXpeO0uAvK_dEKtsxGTnk",
+			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTEiLCJpc19hZG1pbiI6ZmFsc2UsInVzZXJfaWQiOjExfQ.ByYFfzhAQ6Y-XwNY9BP4RXns17eSo8zty9V9qU1OgzA",
 		},
 	}
 	for _, tt := range tests {
@@ -49,7 +49,7 @@ func TestUser_Login(t *testing.T) {
 				Name:     tt.fields.Name,
 				Password: tt.fields.Password,
 			}
-			if got := getName(u); got != tt.want {
+			if got := createToken(u); got != tt.want {
 				t.Errorf("\nLogin() = %v,\nwant %v", got, tt.want)
 			}
 		})
@@ -63,18 +63,18 @@ func Test_getId(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want string
+		want uint
 	}{
 		{
 			"S / token get Id",
-			args{strToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTEiLCJpc19hZG1pbiI6ZmFsc2UsImVtYWlsIjoidGVzdEBhc2tlLmNvLmtyIn0.PTXUo32VfBNI0QX71vHyVklXpeO0uAvK_dEKtsxGTnk"},
-			"test@aske.co.kr",
+			args{strToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTAwIiwiaXNfYWRtaW4iOmZhbHNlLCJ1c2VyX2lkIjoxMDB9.cT5r-erbnVfxu0MoB6bAXcpFh3gCifnt-KQIaGhk9GM"},
+			100,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getEmail(tt.args.strToken); got != tt.want {
-				t.Errorf("getEmail() = %v, want %v", got, tt.want)
+			if got := getUserID(tt.args.strToken); got != tt.want {
+				t.Errorf("getUserID() = %v, want %v", got, tt.want)
 			}
 		})
 	}

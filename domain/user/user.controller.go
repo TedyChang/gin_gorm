@@ -7,16 +7,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetName(c *gin.Context) {
+func GetUserId(c *gin.Context) {
 	var token = c.GetHeader("Cookie")
 
+	if token == "" {
+		get.Bad(c, "empty token")
+	}
 	var strToken = token[len("token="):]
 
 	if strToken == "" {
 		get.Bad(c, "not principal")
 	} else {
-		u := getEmail(strToken)
-		get.Ok(c, u)
+		u := getUserID(strToken)
+		get.OkId(c, u)
 	}
 
 }

@@ -1,9 +1,9 @@
 
-### dev
+### read User Info
 GET {{url}}/user
 Accept: application/json
 
-### save
+### create User
 POST {{url}}/user
 Content-Type: application/json
 
@@ -12,7 +12,7 @@ Content-Type: application/json
   "password": "password1"
 }
 
-### login
+### Login
 POST {{url}}/login
 Content-Type: application/json
 
