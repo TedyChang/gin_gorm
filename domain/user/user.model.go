@@ -1,14 +1,17 @@
 package user
 
 import (
+	"gin_gorm/domain/user/group"
 	db "gin_gorm/gorm"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Name     string
-	Password string
+	Name        string
+	Password    string
+	UserGroupID uint
+	UserGroup   group.UserGroup
 }
 
 func (u *User) FindById() {
