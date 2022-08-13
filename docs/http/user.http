@@ -1,0 +1,15 @@
+
+### dev
+GET {{url}}/user
+Accept: application/json
+
+### save
+POST {{url}}/user
+Content-Type: application/json
+
+{
+  "name": "test1",
+  "password": "password1"
+}
+
+###

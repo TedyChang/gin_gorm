@@ -13,7 +13,7 @@ type userClaims struct {
 	Email           string `json:"email"`
 }
 
-func CreateToken(id int64) (string, error) {
+func CreateToken(id uint) (string, error) {
 	key := []byte("jwt_!test")
 	signer, err := jwt.NewSignerHS(jwt.HS256, key)
 	checkErr(err)

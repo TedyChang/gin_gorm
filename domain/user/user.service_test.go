@@ -1,10 +1,15 @@
 package user
 
-import "testing"
+import (
+	"errors"
+	"gorm.io/gorm"
+	"reflect"
+	"testing"
+)
 
 func TestUser_Login(t *testing.T) {
 	type fields struct {
-		Id       int64
+		ID       uint
 		Name     string
 		Password string
 	}
@@ -16,21 +21,21 @@ func TestUser_Login(t *testing.T) {
 		{
 			"100",
 			fields{
-				Id: 100,
+				ID: 100,
 			},
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTAwIiwiaXNfYWRtaW4iOmZhbHNlLCJlbWFpbCI6InRlc3RAYXNrZS5jby5rciJ9.6ZcNPBX0kGfmHTCndbbt63ICX_mxyW7nCcXw3fxDo7A",
 		},
 		{
 			"101",
 			fields{
-				Id: 123,
+				ID: 123,
 			},
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTIzIiwiaXNfYWRtaW4iOmZhbHNlLCJlbWFpbCI6InRlc3RAYXNrZS5jby5rciJ9.kS0LaBans8jHojQ6PAfXgloIReBPFQVxOOBLwGq18p0",
 		},
 		{
 			"102",
 			fields{
-				Id: 11,
+				ID: 11,
 			},
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTEiLCJpc19hZG1pbiI6ZmFsc2UsImVtYWlsIjoidGVzdEBhc2tlLmNvLmtyIn0.PTXUo32VfBNI0QX71vHyVklXpeO0uAvK_dEKtsxGTnk",
 		},
@@ -38,11 +43,13 @@ func TestUser_Login(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			u := User{
-				Id:       tt.fields.Id,
+				Model: gorm.Model{
+					ID: tt.fields.ID,
+				},
 				Name:     tt.fields.Name,
 				Password: tt.fields.Password,
 			}
-			if got := u.Login(); got != tt.want {
+			if got := Login(u); got != tt.want {
 				t.Errorf("\nLogin() = %v,\nwant %v", got, tt.want)
 			}
 		})
@@ -50,19 +57,75 @@ func TestUser_Login(t *testing.T) {
 }
 
 func Test_getId(t *testing.T) {
+	type args struct {
+		strToken string
+	}
 	tests := []struct {
 		name string
+		args args
 		want string
 	}{
 		{
-			"1",
+			"token get Id",
+			args{strToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJnby1naW4tcHJvamVjdC1jb3JlIiwiYXVkIjoiMTEiLCJpc19hZG1pbiI6ZmFsc2UsImVtYWlsIjoidGVzdEBhc2tlLmNvLmtyIn0.PTXUo32VfBNI0QX71vHyVklXpeO0uAvK_dEKtsxGTnk"},
 			"test@aske.co.kr",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getId(); got != tt.want {
+			if got := getId(tt.args.strToken); got != tt.want {
 				t.Errorf("getId() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_validateSave(t *testing.T) {
+	type args struct {
+		u User
+	}
+	tests := []struct {
+		name  string
+		args  args
+		want  error
+		want1 error
+	}{
+		{
+			"S / validate user save success",
+			args{u: User{
+				Name:     "test",
+				Password: "pw1",
+			}},
+			nil,
+			nil,
+		},
+		{
+			"F / empty name",
+			args{u: User{
+				Name:     "",
+				Password: "pw1",
+			}},
+			errors.New("empty name"),
+			nil,
+		},
+		{
+			"F / empty pw",
+			args{u: User{
+				Name:     "test",
+				Password: "",
+			}},
+			nil,
+			errors.New("empty pw"),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1 := validateSave(tt.args.u)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("validateSave() got = %v, want %v", got, tt.want)
+			}
+			if !reflect.DeepEqual(got1, tt.want1) {
+				t.Errorf("validateSave() got1 = %v, want %v", got1, tt.want1)
 			}
 		})
 	}

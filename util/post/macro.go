@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func Ok(c *gin.Context, s int64) {
+func Ok(c *gin.Context, s uint) {
 	c.JSON(http.StatusOK, gin.H{
 		"id": s,
 	})
