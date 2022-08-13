@@ -53,7 +53,7 @@ func PostLogin(c *gin.Context) {
 	var pw = dto.Password
 
 	if err1 == nil {
-		token := Login(User{Name: name, Password: pw})
+		token := login(User{Name: name, Password: pw})
 
 		if token == "" {
 			get.Bad(c, "")

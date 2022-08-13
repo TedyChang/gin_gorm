@@ -7,10 +7,12 @@ import (
 	"log"
 )
 
+// fn
 func getUser(token string) string {
 	return getId(token)
 }
 
+// fn
 func getId(strToken string) string {
 	rawToken := []byte(strToken)
 
@@ -22,8 +24,15 @@ func getId(strToken string) string {
 	return auth.ParseToken(token)
 }
 
-func Login(u User) string {
+// io
+func login(u User) string {
 	u.FindByNamePw()
+
+	return getName(u)
+}
+
+// fn
+func getName(u User) string {
 	if u.ID == 0 {
 		return ""
 	}
@@ -31,6 +40,7 @@ func Login(u User) string {
 	return str
 }
 
+// fn
 func validateSave(u User) (error, error) {
 	name := u.Name
 	pw := u.Password

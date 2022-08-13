@@ -49,7 +49,7 @@ func TestUser_Login(t *testing.T) {
 				Name:     tt.fields.Name,
 				Password: tt.fields.Password,
 			}
-			if got := Login(u); got != tt.want {
+			if got := getName(u); got != tt.want {
 				t.Errorf("\nLogin() = %v,\nwant %v", got, tt.want)
 			}
 		})
