@@ -2,7 +2,6 @@ package user
 
 import (
 	"errors"
-	db "gin_gorm/gorm"
 	"gin_gorm/util/auth"
 	"github.com/cristalhq/jwt/v4"
 	"log"
@@ -49,6 +48,7 @@ func validateSave(u User) (error, error) {
 	return errName, errPw
 }
 
+// io
 func save(u User) (uint, error) {
 	err1, err2 := validateSave(u)
 
@@ -61,11 +61,8 @@ func save(u User) (uint, error) {
 
 	// io get duple user-name
 	var exists bool
-	err3 := db.DB.Model(User{}).
-		Select("count(*) > 0").
-		Where("name = ?", u.Name).
-		Find(&exists).
-		Error
+	err3 := u.Exists(&exists)
+
 	if err3 != nil {
 		log.Printf("err : fail count user-name // %v", err1)
 		return 0, err3
