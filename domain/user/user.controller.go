@@ -15,7 +15,7 @@ func GetName(c *gin.Context) {
 	if strToken == "" {
 		get.Bad(c, "not principal")
 	} else {
-		u := getUser(strToken)
+		u := getEmail(strToken)
 		get.Ok(c, u)
 	}
 

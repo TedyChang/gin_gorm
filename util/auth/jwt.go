@@ -34,7 +34,7 @@ func CreateToken(id uint) (string, error) {
 	return token.String(), nil
 }
 
-func ParseToken(token *jwt.Token) string {
+func TokenGetEmail(token *jwt.Token) string {
 	key := []byte("jwt_!test")
 
 	verifier, err := jwt.NewVerifierHS(jwt.HS256, key)
@@ -54,6 +54,16 @@ func ParseToken(token *jwt.Token) string {
 	}
 
 	return u.Email
+}
+
+func StringToToken(strToken string) *jwt.Token {
+	rawToken := []byte(strToken)
+
+	key := []byte(`jwt_!test`)
+	verifier, _ := jwt.NewVerifierHS(jwt.HS256, key)
+	token, _ := jwt.Parse(rawToken, verifier)
+
+	return token
 }
 
 func checkErr(err error) {

@@ -3,25 +3,12 @@ package user
 import (
 	"errors"
 	"gin_gorm/util/auth"
-	"github.com/cristalhq/jwt/v4"
 	"log"
 )
 
 // fn
-func getUser(token string) string {
-	return getId(token)
-}
-
-// fn
-func getId(strToken string) string {
-	rawToken := []byte(strToken)
-
-	key := []byte(`jwt_!test`)
-	verifier, _ := jwt.NewVerifierHS(jwt.HS256, key)
-
-	token, _ := jwt.Parse(rawToken, verifier)
-
-	return auth.ParseToken(token)
+func getEmail(strToken string) string {
+	return auth.TokenGetEmail(auth.StringToToken(strToken))
 }
 
 // io

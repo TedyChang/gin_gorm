@@ -73,8 +73,8 @@ func Test_getId(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getId(tt.args.strToken); got != tt.want {
-				t.Errorf("getId() = %v, want %v", got, tt.want)
+			if got := getEmail(tt.args.strToken); got != tt.want {
+				t.Errorf("getEmail() = %v, want %v", got, tt.want)
 			}
 		})
 	}
