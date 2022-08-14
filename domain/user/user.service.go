@@ -58,7 +58,7 @@ func save(u User) (uint, error) {
 
 	// io get duple user-name
 	var exists bool
-	err3 := u.Exists(&exists)
+	err3 := u.ExistByName(&exists)
 
 	if err3 != nil {
 		log.Printf("err : fail count user-name // %v", err1)

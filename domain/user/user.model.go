@@ -26,7 +26,7 @@ func (u *User) FindByNamePw() {
 	db.DB.Where("name = ? AND password = ?", u.Name, u.Password).First(&u)
 }
 
-func (u User) Exists(exists *bool) error {
+func (u User) ExistByName(exists *bool) error {
 	return db.DB.Model(User{}).
 		Select("count(*) > 0").
 		Where("name = ?", u.Name).
